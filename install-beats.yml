@@ -1,0 +1,5 @@
+---
+- hosts: gcloud
+  become: true
+  roles:
+          - role: install-beats
