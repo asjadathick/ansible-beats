@@ -1,29 +1,31 @@
 ---
-- name: Add Elastic apt-key for required packages
-  apt_key:
-    url: "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
+- name: Include OS-specific variables.
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: Include playbook variables
+  include_vars: "all.yml"
+
+- include_tasks: "install-{{ ansible_os_family }}.yml"
+
+- name: Install metricbeat
+  package:
+    name: metricbeat
     state: present
 
-- name: Install apt-transport-https
-  apt:
-    name:
-      apt-transport-https      
-
-- name: Add Elastic apt repository
-  apt_repository:
-    repo: "deb https://artifacts.elastic.co/packages/7.x/apt stable main"
+- name: Install auditbeat
+  package:
+    name: auditbeat
     state: present
 
-- name: Install required apt packages
-  apt:
-    name: "{{ packages }}"
-    update_cache: yes
-  vars:
-    packages:
-      - metricbeat
-      - auditbeat
-      - filebeat
-      - packetbeat
+- name: Install filebeat
+  package:
+    name: filebeat
+    state: present
+
+- name: Install packetbeat
+  package:
+    name: packetbeat
+    state: present
 
 - name: Configure metricbeat.yml
   template:

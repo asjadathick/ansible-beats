@@ -1,0 +1,13 @@
+---
+- name: Add Elastic rpm-key for required packages
+  rpm_key:
+    key: "{{elastic_rpm_key}}"
+    state: present
+
+- name: Add Elastic rpm repository
+  yum_repository:
+    name: elasticsearch-7.x
+    baseurl: "{{ elastic_rpm_repo }}"
+    description: "Elasticsearch repository for 7.x packages"
+
+
