@@ -2,4 +2,4 @@
 - hosts: gcloud
   become: true
   roles:
-          - role: install-beats
+    - role: install-beats
